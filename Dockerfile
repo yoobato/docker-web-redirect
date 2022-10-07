@@ -1,4 +1,5 @@
-FROM nginx:1.15-alpine
+# Stable (Oct 4th, 2022)
+FROM nginx:1.22.0-alpine
 
 COPY start.sh /usr/local/bin/
 
