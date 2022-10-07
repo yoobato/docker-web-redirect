@@ -6,14 +6,14 @@ if [ -z "${REDIRECT_CODE}" ]; then
 fi
 
 # Validate HTTP Redirect Code
-# 301 : Permanant / GET when request to redirected location
-# 308 : Permanant / Same HTTP method
+# 301 : Permanent / GET when request to redirected location
+# 308 : Permanent / Same HTTP method
 # 302 : Temporary / Originally same as 307, but most browsers only use GET
 # 303 : Temporary / GET
 # 307 : Temporary / Same HTTP method
 echo "301, 302, 303, 307, 308" | grep -qw ${REDIRECT_CODE}
 if [[ $? -ne 0 ]]; then
-	echo -e "Invalid REDIRECT_CODE(${REDIRECT_CODE}).\nUse 301, 308 for Permanant Redirects.\nUse 302, 303, 307 for Temporary Redirects."
+	echo -e "Invalid REDIRECT_CODE(${REDIRECT_CODE}).\nUse 301, 308 for Permanent Redirects.\nUse 302, 303, 307 for Temporary Redirects."
 	exit 1
 fi
 
