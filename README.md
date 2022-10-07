@@ -1,7 +1,7 @@
 # Docker-Web-Redirect #
 
 This docker container listens on port 80 (default) and redirects all web traffic to the given target domain/URL.
-- Forked from (MorbZ/docker-web-redirect)[https://github.com/MorbZ/docker-web-redirect]
+- forked from (MorbZ/docker-web-redirect)[https://github.com/MorbZ/docker-web-redirect]
   - Differences
     - Use HTTP redirect instead of nginx rewrite
     - Drop URL path
@@ -19,7 +19,7 @@ This docker container listens on port 80 (default) and redirects all web traffic
     - `302` : Temporary redirects. Originally same as `307`, but most browsers do like `303`.
   - Default code is `302`.
 
-**Example :** `$ docker run --rm -d -e REDIRECT_TARGET=https://kftc.or.kr -p 80:80 yoobato/docker-web-redirect:1.0.0`
+**Example :** `$ docker run --rm -d -e REDIRECT_TARGET=https://kftc.or.kr -p 80:80 yoobato/docker-web-redirect`
 
 ## Docker Compose ##
 This image can be combined with the [nginxproxy/nginx-proxy](https://hub.docker.com/r/nginxproxy/nginx-proxy/).
@@ -30,7 +30,7 @@ version: '3.8'
 
 services:
   redirect:
-    image: yoobato/docker-web-redirect:1.0.0
+    image: yoobato/docker-web-redirect
     restart: always
     environment:
       - VIRTUAL_HOST=kftcold.net
