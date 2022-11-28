@@ -66,9 +66,9 @@ else
 	# URL Rewrite
 	##
 
-	# Default to redirect (Permanent)
+	# Default to redirect
 	if [ -z "${REWRITE_FLAG}" ]; then
-		REWRITE_FLAG="permanent"
+		REWRITE_FLAG="redirect"
 	fi
 
 	# Validate Rewrite Flag
