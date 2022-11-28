@@ -85,7 +85,7 @@ else
 	cat <<EOF > /etc/nginx/conf.d/default.conf
 		server {
 			listen ${LISTEN};
-			rewrite ^/(.*)$ ${REDIRECT_TARGET}\$1 ${REWRITE_FLAG}
+			rewrite ^/(.*)$ ${REDIRECT_TARGET}\$1 ${REWRITE_FLAG};
 		}
 EOF
 
