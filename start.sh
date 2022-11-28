@@ -1,19 +1,11 @@
 #!/bin/bash
 
-# Default to 302 (Temporary Redirect)
-if [ -z "${REDIRECT_CODE}" ]; then
-	REDIRECT_CODE="302"
-fi
-
-# Validate HTTP Redirect Code
-# 301 : Permanent / GET when request to redirected location
-# 308 : Permanent / Same HTTP method
-# 302 : Temporary / Originally same as 307, but most browsers only use GET
-# 303 : Temporary / GET
-# 307 : Temporary / Same HTTP method
-echo "301, 302, 303, 307, 308" | grep -qw ${REDIRECT_CODE}
+# Validate Redirect Type
+# REDIRECT : HTTP Redirect using redirection http status code (ex. 301)
+# REWRITE : URL Rewrite
+echo "REDIRECT, REWRITE" | grep -qw ${REDIRECT_TYPE}
 if [[ $? -ne 0 ]]; then
-	echo -e "Invalid REDIRECT_CODE(${REDIRECT_CODE}).\nUse 301, 308 for Permanent Redirects.\nUse 302, 303, 307 for Temporary Redirects."
+	echo -e "Invalid REDIRECT_TYPE(${REDIRECT_TYPE}).\nUse REDIRECT for HTTP Redirect.\nUse REWRITE for URL Rewrite."
 	exit 1
 fi
 
@@ -40,13 +32,64 @@ if [ -n "${VIRTUAL_PORT}" ]; then
 	LISTEN="${VIRTUAL_PORT}"
 fi
 
-cat <<EOF > /etc/nginx/conf.d/default.conf
-server {
-	listen ${LISTEN};
-	return ${REDIRECT_CODE} ${REDIRECT_TARGET};
-}
+##
+# HTTP Redirect 
+##
+if [ "${REDIRECT_TYPE}" = "REDIRECT" ]; then
+	# Default to 302 (Temporary Redirect)
+	if [ -z "${REDIRECT_CODE}" ]; then
+		REDIRECT_CODE="302"
+	fi
+
+	# Validate HTTP Redirect Code
+	# 301 : Permanent / GET when request to redirected location
+	# 308 : Permanent / Same HTTP method
+	# 302 : Temporary / Originally same as 307, but most browsers only use GET
+	# 303 : Temporary / GET
+	# 307 : Temporary / Same HTTP method
+	echo "301, 302, 303, 307, 308" | grep -qw ${REDIRECT_CODE}
+	if [[ $? -ne 0 ]]; then
+		echo -e "Invalid REDIRECT_CODE(${REDIRECT_CODE}).\nUse 301, 308 for Permanent Redirects.\nUse 302, 303, 307 for Temporary Redirects."
+		exit 1
+	fi
+
+	cat <<EOF > /etc/nginx/conf.d/default.conf
+		server {
+			listen ${LISTEN};
+			return ${REDIRECT_CODE} ${REDIRECT_TARGET};
+		}
 EOF
 
-echo "Listening to ${LISTEN}, Redirecting HTTP requests to ${REDIRECT_TARGET} (${REDIRECT_CODE})"
+	echo "Listening to ${LISTEN}, Redirecting HTTP requests to ${REDIRECT_TARGET} (${REDIRECT_CODE})"
+else
+	##
+	# URL Rewrite
+	##
+
+	# Default to redirect (Permanent)
+	if [ -z "${REWRITE_FLAG}" ]; then
+		REWRITE_FLAG="permanent"
+	fi
+
+	# Validate Rewrite Flag
+	# permanent (same as 301)
+	# redirect (same as 302)
+	# break (Not Implemented)
+	# last (Not Implemented)
+	echo "permanent, redirect" | grep -qw ${REWRITE_FLAG}
+	if [[ $? -ne 0 ]]; then
+		echo -e "Invalid REWRITE_FLAG(${REWRITE_FLAG}).\nUse permanent for Permanent Rewrite.\nUse redirect for Temporary Rewrite."
+		exit 1
+	fi
+
+	cat <<EOF > /etc/nginx/conf.d/default.conf
+		server {
+			listen ${LISTEN};
+			rewrite ^/(.*)$ ${REDIRECT_TARGET}\$1 ${REWRITE_FLAG}
+		}
+EOF
+
+	echo "Listening to ${LISTEN}, Rewriting URL to ${REDIRECT_TARGET} (${REWRITE_FLAG})"
+fi
 
 exec nginx -g "daemon off;"
