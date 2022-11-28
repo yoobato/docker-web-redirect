@@ -3,14 +3,27 @@
 This docker container listens on port 80 (default) and redirects all web traffic to the given target domain/URL.
 - forked from [MorbZ/docker-web-redirect](https://github.com/MorbZ/docker-web-redirect)
   - Differences
-    - Use HTTP redirect instead of nginx rewrite
-    - Drop URL path
+    - Add HTTP Redirect (drop URL Path)
+    - Code refactoring
 
 ## Usage ##
-### Environment ###
+### (Common)Environment ###
+- (Required) The redirection type is set by the `REDIRECT_TYPE` environment variable.
+  - Available types
+    - `REWRITE` : Performs URL Rewrite
+    - `REDIRECT` : Performs HTTP Redirect
 - (Required) The target domain/URL is set by the `REDIRECT_TARGET` environment variable.
   - Ex. `https://kftc.or.kr`
-- (Optional) The redirection type is set by the `REDIRECT_CODE` environment variable.
+
+### (URL Rewrite) Environment ###
+- (Optional) The rewrite flag is set by the `REWRITE_FLAG` environment variable. (Only used when `REDIRECT_TYPE` is `REWRITE`.)
+  - Available flags
+    - `permanent` : Permanent rewrites. (Similar from HTTP 301 redirect)
+    - `redirect` : Temporary rewrites. (Similar from HTTP 302 redirect)
+  - Default flag is `redirect`.
+
+### (HTTP Redirect) Environment ###
+- (Optional) The redirection type is set by the `REDIRECT_CODE` environment variable. (Only used when `REDIRECT_TYPE` is `REDIRECT`.)
   - Available codes
     - `301` : Permanent redirects. Using GET method to redirected location.
     - `308` : Permanent redirects. Using same method to redirected location. (Not supported by IE)
@@ -21,7 +34,11 @@ This docker container listens on port 80 (default) and redirects all web traffic
 
 ### Example ###
 ```sh
-$ docker run --rm -d -e REDIRECT_TARGET=https://kftc.or.kr -p 80:80 yoobato/docker-web-redirect
+# URL Rewrite
+$ docker run --rm -d -e REDIRECT_TYPE=REWRITE REDIRECT_TARGET=https://kftc.or.kr -p 80:80 yoobato/docker-web-redirect
+
+# HTTP Redirect
+$ docker run --rm -d -e REDIRECT_TYPE=REDIRECT REDIRECT_TARGET=https://kftc.or.kr -p 80:80 yoobato/docker-web-redirect
 ```
 
 ## Docker Compose ##
