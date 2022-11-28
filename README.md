@@ -57,3 +57,10 @@ services:
       - REDIRECT_TARGET=https://kftcnew.net
       - REDIRECT_CODE=301
 ```
+
+## Docker Build ##
+Build multi-platform images (https://docs.docker.com/build/building/multi-platform/)
+
+```sh
+docker buildx build --platform linux/arm64,linux/amd64,linux/arm/v7 -t yoobato/docker-web-redirect:{version_tag} --push .
+```
