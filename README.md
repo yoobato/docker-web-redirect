@@ -54,6 +54,7 @@ services:
     restart: always
     environment:
       - VIRTUAL_HOST=kftcold.net
+      - REDIRECT_TYPE=REDIRECT
       - REDIRECT_TARGET=https://kftcnew.net
       - REDIRECT_CODE=301
 ```
