@@ -6,6 +6,9 @@ This docker container listens on port 80 (default) and redirects all web traffic
     - Add HTTP Redirect (drop URL Path)
     - Code refactoring
 
+## To Do ##
+- [ ] GitHub Actions CI/CD Workflow (Publish to Docker Hub)
+
 ## Usage ##
 ### (Common)Environment ###
 - (Required) The redirection type is set by the `REDIRECT_TYPE` environment variable.
