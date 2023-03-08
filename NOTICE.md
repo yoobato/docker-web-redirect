@@ -1,13 +1,20 @@
+# OSS Notice | docker-web-redirect #
+
+This application is Copyright © Daeyeol Ryu. All rights reserved.
+
+The following sets forth attribution notices for third party software that may be contained in this application.
+
+ **MorbZ/Docker-Web-Redirect**
+
+https://github.com/MorbZ/docker-web-redirect
+
+Copyright 2017 Merten Peetz
+
 MIT License
 
-Copyright (c) 2022 Daeyeol Ryu
+# MIT License #
 
-(Same as below)
-
----
-
-MIT License
-
+``````````
 Copyright (c) 2017 Merten Peetz
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,3 +34,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+``````````
